@@ -1,4 +1,4 @@
-# vue-weather
+# vue-poke
 
 > A Vue.js project
 
