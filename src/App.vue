@@ -9,19 +9,7 @@
   </vue-simple-suggest>
             <div v-if="loading">
           <img src="../src/assets/loading_icon.gif"/>
-        </div>
- <!-- <nav>{{select}}
-    <div class="nav-wrapper">
-      <form>
-        <div class="input-field">
-          <input id="search" type="search" required>
-          <label class="label-icon" for="search"><i class="material-icons">search</i></label>
-          <i class="material-icons">close</i>
-        </div>
-      </form>
-    </div> 
-  </nav>-->
-           
+        </div> 
   </div>
 </template>
 
@@ -51,7 +39,7 @@ export default {
       results : [],
       select: '',
       poke: [],
-      loading : false
+      loading : false,
     }
   },
     created() {
@@ -77,7 +65,7 @@ export default {
       },
 
     loadWeather(selected, allPoke) {
-this.loading = true;
+  
       var valid = false;
       for(var i=0; i<allPoke.length; i++) {
         if(selected == allPoke[i]) {
@@ -86,7 +74,7 @@ this.loading = true;
       }
 
       if(valid){
-
+    this.loading = true;
         
        axios.get('http://pokeapi.salestock.net/api/v2/pokemon/'+selected.toLowerCase())
 
@@ -127,5 +115,11 @@ this.loading = true;
 </script>
 
 <style>
+
+
+  .vue-simple-suggest designed{
+    margin-top: 50px;
+
+}
 
 </style>
