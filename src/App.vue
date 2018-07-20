@@ -1,12 +1,16 @@
 <template>
   <div id="app">
   <vue-simple-suggest
-    v-model="chosen"
+    v-model="select"
     :list="simpleSuggestionList"
-    :filter-by-query="true">
+    :filter-by-query="true"
+    @input="onChange">
 <!-- Filter by input text to only show the matching results -->
   </vue-simple-suggest>
- <nav>
+            <div v-if="loading">
+          <img src="../src/assets/loading_icon.gif"/>
+        </div>
+ <!-- <nav>{{select}}
     <div class="nav-wrapper">
       <form>
         <div class="input-field">
@@ -15,8 +19,8 @@
           <i class="material-icons">close</i>
         </div>
       </form>
-    </div>
-  </nav>
+    </div> 
+  </nav>-->
            
   </div>
 </template>
@@ -45,13 +49,14 @@ export default {
       lat: {},
       lon: {},
       results : [],
-      chosen: '',
-      poke: []
+      select: '',
+      poke: [],
+      loading : false
     }
   },
     created() {
 
-      this.loadWeather();
+     this.loading = false;
       this.getPokeNames();
   },
   methods:{
@@ -62,12 +67,31 @@ export default {
 
       },
 
-    loadWeather() {
 
-       axios.get(`http://pokeapi.salestock.net/api/v2/pokemon/butterfree`)
+      onChange(){
+
+        console.log(this.select)
+        var selected = this.select
+        var allPoke = this.poke
+         this.loadWeather(selected, allPoke);
+      },
+
+    loadWeather(selected, allPoke) {
+this.loading = true;
+      var valid = false;
+      for(var i=0; i<allPoke.length; i++) {
+        if(selected == allPoke[i]) {
+          valid = true;
+        }
+      }
+
+      if(valid){
+
+        
+       axios.get('http://pokeapi.salestock.net/api/v2/pokemon/'+selected.toLowerCase())
 
       .then(res => {
-
+      this.loading = false;
           var data = res.data;
      
       var results = [];
@@ -76,10 +100,14 @@ export default {
         
       })
       .catch(e => {
+        this.loading = false;
+
         console.error(e);
       });
-        
+      }
+
     },
+
     getPokeNames() {
 
       var check = pokeNAMES.toString();
