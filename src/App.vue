@@ -5,6 +5,7 @@
     :list="simpleSuggestionList"
     :filter-by-query="true"
     @input="onChange">
+
 <!-- Filter by input text to only show the matching results -->
   </vue-simple-suggest>
             <div v-if="loading">
@@ -43,7 +44,6 @@ export default {
     }
   },
     created() {
-
      this.loading = false;
       this.getPokeNames();
   },
@@ -51,10 +51,10 @@ export default {
 
 
          simpleSuggestionList() {
+         // console.log($refs)
         return this.poke
 
       },
-
 
       onChange(){
 
@@ -63,6 +63,7 @@ export default {
         var allPoke = this.poke
          this.loadWeather(selected, allPoke);
       },
+
 
     loadWeather(selected, allPoke) {
   
