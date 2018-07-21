@@ -52,7 +52,7 @@ export default {
 
          simpleSuggestionList() {
 
-          //this is to filter by the first letter the pokemon name starts with
+          //this is to filter by the firstletter the pokemon name starts with
          var pokeList = this.poke;
          var returnArr = [];
          var firstValue = this.select
