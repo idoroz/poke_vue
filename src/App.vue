@@ -51,8 +51,20 @@ export default {
 
 
          simpleSuggestionList() {
-         // console.log($refs)
-        return this.poke
+
+          //this is to filter by the first letter the pokemon name starts with
+         var pokeList = this.poke;
+         var returnArr = [];
+         var firstValue = this.select
+         var firstLetter = firstValue.charAt(0);
+
+         for(var i = 0; i<pokeList.length; i++) {
+         //console.log(pokeList[i].startsWith(firstLetter.toUpperCase()))
+          if(pokeList[i].startsWith(firstLetter.toUpperCase()) == true) {
+          returnArr.push(pokeList[i])
+          }
+         }
+        return returnArr
 
       },
 
