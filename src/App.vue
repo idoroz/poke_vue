@@ -1,5 +1,7 @@
 <template>
   <div id="app">
+     <div class="row">
+       <div class="col s12 m6">
   <vue-simple-suggest
     v-model="select"
     :list="simpleSuggestionList"
@@ -8,18 +10,25 @@
 
 <!-- Filter by input text to only show the matching results -->
   </vue-simple-suggest>
+  </div>
+  </div>
             <div v-if="loading">
           <img src="../src/assets/loading_icon.gif"/>
         </div> 
 
+           <div v-if="showPoke">
   <div class="cardWrapper">
  <div class="row">
     <div class="col s12 m6">
       <div class="card blue-grey darken-1">
         <div class="card-content white-text">
-          <span class="card-title">Card Title</span>
+          <span class="card-title">{{results.name}}</span>
           <p>I am a very simple card. I am good at containing small bits of information.
-          I am convenient because I require little markup to use effectively.</p>
+          I am convenient because I require little markup to use effectively.
+          <!-- <img src="https://img.pokemondb.net/artwork/pikachu.jpg"> -->
+        <img v-bind:src="'https://img.pokemondb.net/artwork/'+results.name + '.jpg'">
+
+        </p>
         </div>
         <div class="card-action">
           <a href="#">This is a link</a>
@@ -31,8 +40,9 @@
 
 
   </div>
-  </div>
 
+        </div>
+    </div>
 </template>
 
 
@@ -43,6 +53,7 @@
 import axios from 'axios'
 import moment from 'moment'
 import VueSimpleSuggest from 'vue-simple-suggest'
+  import 'vue-simple-suggest/dist/styles.css' // Using a css-loader
 import 'vue-simple-suggest/dist/styles.css'
 import pokeNAMES from './assets/pokemon_names.js'
 
@@ -62,22 +73,28 @@ export default {
       select: '',
       poke: [],
       loading : false,
+      showPoke : false
     }
   },
     created() {
      this.loading = false;
+     this.showPoke = false;
       this.getPokeNames();
+
   },
   methods:{
 
 
          simpleSuggestionList() {
 
+     this.showPoke = false;
           //this is to filter by the firstletter the pokemon name starts with
          var pokeList = this.poke;
          var returnArr = [];
          var firstValue = this.select
          var firstLetter = firstValue.charAt(0);
+         //var check = this
+console.log(this)
 
          for(var i = 0; i<pokeList.length; i++) {
          //console.log(pokeList[i].startsWith(firstLetter.toUpperCase()))
@@ -85,12 +102,13 @@ export default {
           returnArr.push(pokeList[i])
           }
          }
-        return returnArr
+         console.log(returnArr)
+        return this.poke
 
       },
 
       onChange(){
-
+     this.showPoke = false;
         console.log(this.select)
         var selected = this.select
         var allPoke = this.poke
@@ -114,15 +132,17 @@ export default {
 
       .then(res => {
       this.loading = false;
-          var data = res.data;
+      this.showPoke = true;
+      var data = res.data;
      
       var results = [];
       console.log(data)
-        this.results = results;
+        this.results = data;
         
       })
       .catch(e => {
         this.loading = false;
+        this.showPoke = false;
 
         console.error(e);
       });
@@ -150,10 +170,54 @@ export default {
 
 <style>
 
-
-  .vue-simple-suggest designed{
-    margin-top: 50px;
-
+.button
+{
+  width: 150px;
+  padding: 10px;
+  background-color: #FF8C00;
+  box-shadow: -8px 8px 10px 3px rgba(0,0,0,0.2);
+    font-weight:bold;
+  text-decoration:none;
+}
+.cover{
+    position:fixed;
+    top:0;
+    left:0;
+    background:rgba(0,0,0,0.6);
+    z-index:5;
+    width:100%;
+    height:100%;
+    display:none;
+}
+.loginScreen
+{
+    height:380px;
+    width:340px;
+    margin:0 auto;
+    position:relative;
+    z-index:10;
+    display:none;
+  border:5px solid #cccccc;
+  border-radius:10px;
+}
+.loginScreen:target, .loginScreen:target + .cover{
+    display:block;
+    opacity:2;
+}
+.cancel
+{
+    display:block;
+    position:absolute;
+    top:3px;
+    right:2px;
+    background:rgb(245,245,245);
+    color:black;
+    height:30px;
+    width:35px;
+    font-size:30px;
+    text-decoration:none;
+    text-align:center;
+    font-weight:bold;
 }
 
 </style>
