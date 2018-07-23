@@ -15,8 +15,7 @@
             <div v-if="loading">
           <img src="../src/assets/loading_icon.gif"/>
         </div> 
-
-           <div v-if="showPoke">
+           <div v-else-if="showPoke">
   <div class="cardWrapper">
  <div class="row">
     <div class="col s12 m6">
@@ -53,9 +52,10 @@
 import axios from 'axios'
 import moment from 'moment'
 import VueSimpleSuggest from 'vue-simple-suggest'
-  import 'vue-simple-suggest/dist/styles.css' // Using a css-loader
+import 'vue-simple-suggest/dist/styles.css' // Using a css-loader
 import 'vue-simple-suggest/dist/styles.css'
 import pokeNAMES from './assets/pokemon_names.js'
+import Modal from './Modal.vue'
 
 
 export default {
